@@ -1,0 +1,18 @@
+CHOOSE.PLAYER.SITE..c_player        CREATE.IMAGES.....c_images
+CREATE.LAND.......c_land            DRAW.LANDSCAPE....d_land
+DRAW.SCREEN.......d_screen          
+
+d_screen          Offset: 00000010H  Code and data size: CA6H
+  DRAW.SCREEN     
+
+d_land            Offset: 000009F0H  Code and data size: 988H
+  DRAW.LANDSCAPE  
+
+c_land            Offset: 00000F30H  Code and data size: C74H
+  CREATE.LAND     
+
+c_player          Offset: 000018D0H  Code and data size: 92EH
+  CHOOSE.PLAYER.SITE                
+
+c_images          Offset: 00001D90H  Code and data size: CBAH
+  CREATE.IMAGES   

@@ -1,0 +1,76 @@
+REM $INCLUDE: 'HEADER.BAA'
+
+SUB Create.Land STATIC
+ STATIC YINC,X,L,X1,X2
+ SHARED L(),Y(),X(),SBY
+ '(Define>-Yinc:Up/Dwn Value For Land
+ '<loops>-X-Land pos,L-Player
+ '<Use)-L(),X1,X2,Y(),X()
+ X1=INT(RND*100)+60:X2=X1+INT(RND*100)+60
+ L(0)=INT(RND*95)+85
+ FOR X=1 TO 319:IF X<X1 OR X>X2 THEN YINC=INT(RND*3)-1 ELSE _
+     YINC=INT(RND*15)-7
+ IF X<>X(1)-10 AND X<>X(2)-10 THEN 410
+ FOR XX=X TO X+20:L(XX)=L(XX-1):NEXT XX:X=XX
+410 IF L(X-1)+YINC<SBY-10 THEN L(X)=L(X-1)+YINC ELSE L(X)=L(X-1)
+ NEXT X:FOR L=1 TO 2:Y(L)=L(X(L))-7:NEXT L
+END SUB
+
+SUB DRAW.SCREEN STATIC
+ STATIC L,X
+ SHARED PL(),PR(),PB,AC,PT,C(),MC,P(),X(),Y(),A(),V()
+ '<Loops>-L-Player,X-X Pos For Dividers In Power Box
+ '<Use>-PL(),PR(),PB,AC,PT,C(),MC,P(),X(),Y(),A(),V()
+ FOR L=1 TO 2
+ LINE(PL(L),PT)-(PR(L),PB),AC,BF
+ LINE(PL(L),PT-1)-(PR(L)+1,PB+1),C(L),B
+ LINE(PL(L),PT)-(PL(L)+P(L),PB),MC,BF
+ FOR X=0 TO P(L) STEP 10:LINE(PL(L)+X,PT)-(PL(L)+X,PB),C(L):NEXT X
+ PSET(X(L),Y(L)),0
+ DRAW "C=" + VARPTR$(AC) + "TA=" + VARPTR$(A(L))
+ IF L=1 THEN
+  DRAW"R7"
+ ELSE
+  DRAW"L7"
+ END IF
+ LOCATE 1,PR(L)/8+1:PRINT USING"###ø";V(L)*A(L)
+ NEXT L
+ LINE(0,SBY+9)-(319,SBY),SBO,B
+ PAINT(160,195),SBB,SBO
+END SUB
+
+SUB DRAW.LANDSCAPE STATIC
+ SHARED LC,L(),MC
+ STATIC X
+ '<Loops>-X-Land Value
+ '<Use>-LC,L(),MC
+ PSET(0,L(0)),LC
+ FOR X=1 TO 319:LINE(X,L(X))-(X-1,L(X-1)),LC:NEXT X:PAINT(1,199),MC,LC
+END SUB
+
+SUB CHOOSE.PLAYER.SITE STATIC
+ STATIC L
+ SHARED X()
+ '<Use>-X()
+ '<Loops>-L-Player
+ FOR L=1 TO 2:X(L)=20+180*(L-1)+INT(RND*100):NEXT L
+END SUB
+
+SUB CREATE.IMAGES static
+ STATIC L
+ shared x(),y(),c(),B1(),B2(),AC,P1(),P2()
+ '<Use>-X(),Y(),C(),B1,B2,AC,P1,P2
+ '<Loops>-L-Player
+ FOR L=1 TO 2
+ CIRCLE(X(L),Y(L)),2,1
+ PAINT(X(L),Y(L)),C(L),1
+ IF L=1 THEN GET(X(L)-2,Y(L)-2)-(X(L)+2,Y(L)+2),B1
+ IF L=2 THEN GET(X(L)-2,Y(L)-2)-(X(L)+2,Y(L)+2),B2
+ LINE(X(L)-2,Y(L)-2)-(X(L)+2,Y(L)+2),0,BF
+ CIRCLE(X(L),Y(L)),9,AC
+ PAINT(X(L),Y(L)),C(L),AC
+ IF L=1 THEN GET(X(L)-9,Y(L)-7)-(X(L)+9,Y(L)+7),P1
+ IF L=2 THEN GET(X(L)-9,Y(L)-7)-(X(L)+9,Y(L)+7),P2
+ NEXT L
+END SUB
+
